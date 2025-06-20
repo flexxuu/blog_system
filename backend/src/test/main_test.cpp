@@ -12,7 +12,7 @@ int main() {
     // configFile >> config;
     Config& config = Config::getInstance("/home/luc/myblog/config/test_config.json");
     std::string host = config.get<std::string>("host", "localhost");
-    int port = config.get<int>("port", 8080);
+    int port = config.get<int>("port", 9876);
     std::cout << "测试客户端启动中，访问 http://" << host << ":" << port << std::endl;
     httplib::Client cli(host.c_str(), port);
 

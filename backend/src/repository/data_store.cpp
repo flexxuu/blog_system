@@ -257,7 +257,7 @@ std::vector<BlogPost> DataStore::getBlogsByCategory(const std::string& category)
     return withReadLock([this, &category] {
         std::vector<BlogPost> result;
         for (const auto& blog : blogs) {
-            if (category == "全部" || blog.category == category) {
+            if (category == "全部" || category == "" || blog.category == category) {
                 result.push_back(blog);
             }
         }

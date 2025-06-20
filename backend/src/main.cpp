@@ -53,14 +53,17 @@ int main() {
         
         // 设置CORS头
         server.set_default_headers(
-            httplib::Headers{{"Access-Control-Allow-Origin", "*"}
-            , {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"}
-            , {"Access-Control-Allow-Headers", "Content-Type"}}
+            httplib::Headers{
+                {"Access-Control-Allow-Origin", "http://172.21.44.86:6789"},
+                {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
+                {"Access-Control-Allow-Headers", "Content-Type"},
+                {"Access-Control-Max-Age", "86400"}  // 缓存预检请求结果24小时
+            }
         );
         
         // 启动服务器
-        std::string host = config.get<std::string>("server.host", "localhost");
-        int port = config.get<int>("server.port", 8080);
+        std::string host = config.get<std::string>("server.host", "0.0.0.0");
+        int port = config.get<int>("server.port", 9876);
         BLogger::getInstance().info("服务器启动中，访问 http://{}:{}", host, port);
 
         // 使用线程池处理请求

@@ -14,7 +14,13 @@ private:
     
 public:
     void setupRoutes(Server& server) {
-            // ============== 博客API ==============
+        
+        // 处理所有路径的OPTIONS请求
+        server.Options(".*", [](const httplib::Request& /*req*/, httplib::Response& res) {
+            res.status = 200;  // 确保OPTIONS请求返回200状态码
+        });
+            
+        // ============== 博客API ==============
         
         // 获取所有博客
         server.Get("/api/blogs", [&](const Request& req, Response& res) {

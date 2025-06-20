@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人网站</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script type="module">
+    // 配置基础URL
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#f97316',
+            dark: '#1e293b',
+            light: '#f8fafc',
+            success: '#10b981',
+            danger: '#ef4444',
+            neutral: '#64748b'
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card-shadow {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      .hover-scale {
+        transition: transform 0.3s ease;
+      }
+      .hover-scale:hover {
+        transform: scale(1.02);
+      }
+      .tab-active {
+        border-bottom: 2px solid theme('colors.primary');
+        color: theme('colors.primary');
+      }
+      .fade-in {
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      .slide-up {
+        animation: slideUp 0.3s ease-out;
+      }
+      @keyframes slideUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+    }
+  </style>
+</head>
+<body class="font-inter bg-light text-dark min-h-screen flex flex-col">
+  <!-- 导航栏 -->
+  <nav id="navbar" class="bg-white shadow-md fixed w-full z-50 transition-all duration-300">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="#" class="text-2xl font-bold text-primary flex items-center">
+        <i class="fa fa-user-circle mr-2"></i>
+        <span>个人网站</span>
+      </a>
+      
+      <!-- 桌面导航 -->
+      <div class="hidden md:flex space-x-8">
+        <a href="#home" class="nav-link font-medium hover:text-primary transition-colors">首页</a>
+        <a href="#blog" class="nav-link font-medium hover:text-primary transition-colors">博客</a>
+        <a href="#memo" class="nav-link font-medium hover:text-primary transition-colors">备忘录</a>
+        <a href="write.html" class="nav-link font-medium hover:text-primary transition-colors">写博客</a>
+      </div>
+      
+      <!-- 移动端菜单按钮 -->
+      <button id="menuBtn" class="md:hidden text-dark focus:outline-none">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+      <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+        <a href="#home" class="mobile-nav-link py-2 font-medium hover:text-primary transition-colors">首页</a>
+        <a href="#blog" class="mobile-nav-link py-2 font-medium hover:text-primary transition-colors">博客</a>
+        <a href="#memo" class="mobile-nav-link py-2 font-medium hover:text-primary transition-colors">备忘录</a>
+        <a href="write.html" class="mobile-nav-link py-2 font-medium hover:text-primary transition-colors">写博客</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容区 -->
+  <main class="flex-grow pt-20">
+    <!-- 首页 -->
+    <section id="home" class="py-16">
+      <div class="container mx-auto px-4">
+        <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-center mb-12">欢迎来到这个网站</h1>
+        
+        <!-- 最新内容 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- 最新博客 -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+              <h2 class="text-xl font-bold flex items-center">
+                <i class="fa fa-newspaper-o text-primary mr-2"></i>最新博客
+              </h2>
+            </div>
+            <div class="p-6 space-y-6" id="home-blogs">
+              <!-- 最新博客内容将通过JS动态加载 -->
+              <div class="bg-gray-50 p-6 rounded-lg">
+                <h3 class="text-xl font-bold mb-2">加载中...</h3>
+                <p class="text-gray-600">请稍候，正在加载博客内容...</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 最新备忘录 -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+              <h2 class="text-xl font-bold flex items-center">
+                <i class="fa fa-sticky-note text-secondary mr-2"></i>最新备忘录
+              </h2>
+            </div>
+            <div class="p-6 space-y-4" id="home-memos">
+              <!-- 最新备忘录内容将通过JS动态加载 -->
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-gray-600">加载中...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 博客部分 -->
+    <section id="blog" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-xl font-bold">我的博客</h2>
+          </div>
+          
+          <!-- 博客筛选和搜索 -->
+          <div class="p-6 border-b border-gray-100">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div class="flex flex-wrap gap-2">
+                <button class="category-btn bg-primary text-white px-4 py-2 rounded-full text-sm">全部</button>
+                <button class="category-btn bg-white text-dark hover:bg-gray-100 px-4 py-2 rounded-full text-sm transition-colors">技术</button>
+                <button class="category-btn bg-white text-dark hover:bg-gray-100 px-4 py-2 rounded-full text-sm transition-colors">生活</button>
+                <button class="category-btn bg-white text-dark hover:bg-gray-100 px-4 py-2 rounded-full text-sm transition-colors">学习</button>
+              </div>
+              <div class="relative w-full md:w-auto">
+                <input type="text" id="blog-search" placeholder="搜索博客..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 w-full md:w-64">
+                <i class="fa fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 博客卡片网格 -->
+          <div class="p-6" id="blog-cards-container">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="blog-cards">
+              <!-- 博客卡片将通过JS动态加载 -->
+              <div class="bg-gray-50 p-6 rounded-lg">
+                <h3 class="text-xl font-bold mb-2">加载中...</h3>
+                <p class="text-gray-600">请稍候，正在加载博客内容...</p>
+              </div>
+            </div>
+            
+            <!-- 加载更多按钮 -->
+            <div class="text-center mt-8">
+              <button id="load-more-blogs" class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-full transition-colors flex items-center mx-auto">
+                <i class="fa fa-refresh mr-2"></i> 加载更多
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 备忘录部分 -->
+    <section id="memo" class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+            <h2 class="text-xl font-bold">我的备忘录</h2>
+            <button id="add-memo-btn" class="bg-secondary hover:bg-secondary/90 text-white font-medium px-4 py-2 rounded-full flex items-center transition-colors">
+              <i class="fa fa-plus mr-2"></i> 新建备忘录
+            </button>
+          </div>
+          
+          <!-- 备忘录列表 -->
+          <div class="p-6" id="memo-list-container">
+            <div class="space-y-4" id="memo-list">
+              <!-- 备忘录内容将通过JS动态加载 -->
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-gray-600">加载中...</p>
+              </div>
+            </div>
+            
+            <!-- 空状态提示 -->
+            <div id="empty-memo-state" class="hidden text-center py-16">
+              <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                <i class="fa fa-sticky-note-o text-gray-400 text-2xl"></i>
+              </div>
+              <h3 class="text-xl font-medium text-gray-500 mb-2">暂无备忘录</h3>
+              <p class="text-gray-400">点击上方"新建备忘录"按钮开始记录你的想法</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">关于我</h3>
+          <p class="text-gray-400">一个热爱技术和分享的开发者，记录生活和学习的点滴。</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">联系方式</h3>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-github text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-twitter text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-linkedin text-xl"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">订阅更新</h3>
+          <div class="flex">
+            <input type="email" placeholder="输入你的邮箱" class="px-4 py-2 rounded-l-lg w-full focus:outline-none text-dark">
+            <button class="bg-primary hover:bg-primary/90 px-4 py-2 rounded-r-lg transition-colors">
+              <i class="fa fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; 2025 个人网站 版权所有</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 博客详情模态框 -->
+  <div id="blog-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto fade-in">
+      <div class="p-6">
+        <div class="flex justify-between items-start mb-4">
+          <h3 id="modal-title" class="text-2xl font-bold"></h3>
+          <div class="flex space-x-2">
+            <button id="edit-blog" class="text-primary hover:text-primary/80 flex items-center">
+              <i class="fa fa-pencil mr-1"></i> 编辑
+            </button>
+            <button id="close-modal" class="text-gray-400 hover:text-gray-600">
+              <i class="fa fa-times text-xl"></i>
+            </button>
+          </div>
+        </div>
+        <div class="text-gray-500 mb-4 flex items-center">
+          <span id="modal-date" class="mr-4"></span>
+          <span id="modal-category"></span>
+        </div>
+        <div id="modal-content" class="prose max-w-none"></div>
+        <div class="mt-6 pt-4 border-t border-gray-100">
+          <button id="delete-blog" class="text-red-500 hover:text-red-600 font-medium flex items-center">
+            <i class="fa fa-trash mr-2"></i> 删除博客
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 新建/编辑博客模态框 -->
+  <div id="edit-blog-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto fade-in">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 id="edit-blog-modal-title" class="text-xl font-bold">新建博客</h3>
+          <button id="close-edit-blog-modal" class="text-gray-400 hover:text-gray-600">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label for="edit-blog-title" class="block text-sm font-medium text-gray-700 mb-1">标题</label>
+            <input type="text" id="edit-blog-title" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="输入博客标题">
+          </div>
+          
+          <div>
+            <label for="edit-blog-category" class="block text-sm font-medium text-gray-700 mb-1">分类</label>
+            <select id="edit-blog-category" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50">
+              <option value="全部">全部</option>
+              <option value="技术">技术</option>
+              <option value="生活">生活</option>
+              <option value="学习">学习</option>
+            </select>
+          </div>
+          
+          <div>
+            <label for="edit-blog-summary" class="block text-sm font-medium text-gray-700 mb-1">摘要</label>
+            <textarea id="edit-blog-summary" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="输入博客摘要（简短描述）"></textarea>
+          </div>
+          
+          <div>
+            <label for="edit-blog-content" class="block text-sm font-medium text-gray-700 mb-1">内容</label>
+            <div class="border border-gray-300 rounded-lg overflow-hidden">
+              <div class="editor-toolbar bg-gray-50 p-2 flex flex-wrap gap-2">
+                <button type="button" data-format="bold" title="粗体"><i class="fa fa-bold"></i></button>
+                <button type="button" data-format="italic" title="斜体"><i class="fa fa-italic"></i></button>
+                <button type="button" data-format="underline" title="下划线"><i class="fa fa-underline"></i></button>
+                <button type="button" data-format="link" title="链接"><i class="fa fa-link"></i></button>
+                <button type="button" data-format="header" data-value="1" title="标题1"><i class="fa fa-header"><sup>1</sup></i></button>
+                <button type="button" data-format="header" data-value="2" title="标题2"><i class="fa fa-header"><sup>2</sup></i></button>
+                <button type="button" data-format="list" data-value="ul" title="无序列表"><i class="fa fa-list-ul"></i></button>
+                <button type="button" data-format="list" data-value="ol" title="有序列表"><i class="fa fa-list-ol"></i></button>
+                <button type="button" data-format="code" title="代码块"><i class="fa fa-code"></i></button>
+              </div>
+              <textarea id="edit-blog-content" rows="12" class="w-full px-4 py-3 border-t border-gray-200 focus:outline-none" placeholder="开始撰写你的博客内容..."></textarea>
+            </div>
+          </div>
+          
+          <div class="flex justify-end space-x-3">
+            <button id="cancel-edit-blog" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center">
+              取消
+            </button>
+            <button id="save-edit-blog" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center">
+              <i class="fa fa-save mr-2"></i> 保存博客
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 新建/编辑备忘录模态框 -->
+  <div id="memo-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-2xl w-full fade-in">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 id="memo-modal-title" class="text-xl font-bold">新建备忘录</h3>
+          <button id="close-memo-modal" class="text-gray-400 hover:text-gray-600">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label for="memo-title" class="block text-sm font-medium text-gray-700 mb-1">标题</label>
+            <input type="text" id="memo-title" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="输入备忘录标题">
+          </div>
+          <div>
+            <label for="memo-content" class="block text-sm font-medium text-gray-700 mb-1">内容</label>
+            <textarea id="memo-content" rows="6" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="输入备忘录内容"></textarea>
+          </div>
+          <div class="flex justify-end space-x-3">
+            <button id="cancel-memo" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">取消</button>
+            <button id="save-memo" class="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 确认对话框 -->
+  <div id="confirm-dialog" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full fade-in">
+      <div class="p-6">
+        <h3 id="confirm-title" class="text-xl font-bold mb-4">确认操作</h3>
+        <p id="confirm-message" class="text-gray-600 mb-6"></p>
+        <div class="flex justify-end space-x-3">
+          <button id="confirm-cancel" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">取消</button>
+          <button id="confirm-ok" class="px-4 py-2 bg-danger text-white rounded-lg hover:bg-danger/90 transition-colors">确认</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // 导入工具函数
+    import { $, $$, debounce, formatDate, fetchData } from './utils.js';
+    import { base_url } from './config.js';
+    
+    // 导航栏滚动效果
+    window.addEventListener('scroll', () => {
+      const navbar = $('#navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('py-2', 'shadow-lg');
+        navbar.classList.remove('py-3', 'shadow-md');
+      } else {
+        navbar.classList.add('py-3', 'shadow-md');
+        navbar.classList.remove('py-2', 'shadow-lg');
+      }
+    });
+    
+    // 移动端菜单切换
+    $('#menuBtn').addEventListener('click', () => {
+      $('#mobileMenu').classList.toggle('hidden');
+    });
+    
+    // 平滑滚动
+    $$('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+          
+          // 如果是移动端，点击导航后关闭菜单
+          if (!$('#mobileMenu').classList.contains('hidden')) {
+            $('#mobileMenu').classList.add('hidden');
+          }
+        }
+      });
+    });
+    
+    // 编辑器工具栏功能
+    $$('.editor-toolbar button').forEach(button => {
+      button.addEventListener('click', () => {
+        const format = button.getAttribute('data-format');
+        const value = button.getAttribute('data-value');
+        const textarea = $('#edit-blog-content');
+        
+        if (textarea) {
+          textarea.focus();
+          
+          // 根据不同格式应用不同的文本编辑
+          switch (format) {
+            case 'bold':
+              document.execCommand('bold', false, null);
+              break;
+            case 'italic':
+              document.execCommand('italic', false, null);
+              break;
+            case 'underline':
+              document.execCommand('underline', false, null);
+              break;
+            case 'link':
+              const url = prompt('请输入链接地址:', 'https://');
+              if (url) {
+                document.execCommand('createLink', false, url);
+              }
+              break;
+            case 'header':
+              document.execCommand('formatBlock', false, `<h${value}>`);
+              break;
+            case 'list':
+              document.execCommand(`${value}`, false, null);
+              break;
+            case 'code':
+              document.execCommand('formatBlock', false, '<pre>');
+              break;
+          }
+        }
+      });
+    });
+    
+    // 博客详情模态框
+    const blogModal = $('#blog-modal');
+    const closeModal = $('#close-modal');
+    
+    // 关闭模态框
+    closeModal.addEventListener('click', () => {
+      blogModal.classList.add('hidden');
+    });
+    
+    // 点击模态框外部关闭
+    blogModal.addEventListener('click', (e) => {
+      if (e.target === blogModal) {
+        blogModal.classList.add('hidden');
+      }
+    });
+    
+    // 新建/编辑博客模态框
+    const editBlogModal = $('#edit-blog-modal');
+    const closeEditBlogModal = $('#close-edit-blog-modal');
+    const cancelEditBlog = $('#cancel-edit-blog');
+    
+    // 关闭编辑博客模态框
+    closeEditBlogModal.addEventListener('click', () => {
+      editBlogModal.classList.add('hidden');
+    });
+    
+    cancelEditBlog.addEventListener('click', () => {
+      editBlogModal.classList.add('hidden');
+    });
+    
+    // 点击模态框外部关闭
+    editBlogModal.addEventListener('click', (e) => {
+      if (e.target === editBlogModal) {
+        editBlogModal.classList.add('hidden');
+      }
+    });
+    
+    // 新建/编辑备忘录模态框
+    const memoModal = $('#memo-modal');
+    const closeMemoModal = $('#close-memo-modal');
+    const cancelMemo = $('#cancel-memo');
+    
+    // 关闭备忘录模态框
+    closeMemoModal.addEventListener('click', () => {
+      memoModal.classList.add('hidden');
+    });
+    
+    cancelMemo.addEventListener('click', () => {
+      memoModal.classList.add('hidden');
+    });
+    
+    // 点击模态框外部关闭
+    memoModal.addEventListener('click', (e) => {
+      if (e.target === memoModal) {
+        memoModal.classList.add('hidden');
+      }
+    });
+    
+    // 确认对话框
+    const confirmDialog = $('#confirm-dialog');
+    const confirmTitle = $('#confirm-title');
+    const confirmMessage = $('#confirm-message');
+    const confirmCancel = $('#confirm-cancel');
+    const confirmOk = $('#confirm-ok');
+    
+    // 关闭确认对话框
+    confirmCancel.addEventListener('click', () => {
+      confirmDialog.classList.add('hidden');
+    });
+    
+    // 点击模态框外部关闭
+    confirmDialog.addEventListener('click', (e) => {
+      if (e.target === confirmDialog) {
+        confirmDialog.classList.add('hidden');
+      }
+    });
+    
+    // 加载最新博客
+    async function loadLatestBlogs() {
+      try {
+        const response = await fetchData(`${base_url}/api/blogs?limit=3`);
+        
+        if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+          const container = $('#home-blogs');
+          container.innerHTML = '';
+          
+          response.data.forEach(blog => {
+            const blogElement = document.createElement('div');
+            blogElement.innerHTML = `
+              <div class="bg-gray-50 p-6 rounded-lg hover-scale slide-up">
+                <div class="flex justify-between items-start">
+                  <h3 class="text-xl font-bold mb-2">${blog.title}</h3>
+                  <span class="text-xs text-gray-500 bg-white px-2 py-1 rounded-full">${blog.category}</span>
+                </div>
+                <p class="text-gray-600">${blog.summary}</p>
+                <div class="mt-4 flex justify-between items-center">
+                  <span class="text-sm text-gray-500">${formatDate(blog.createdAt)}</span>
+                  <button class="text-primary hover:underline view-blog-btn" data-id="${blog.id}">阅读更多</button>
+                </div>
+              </div>
+            `;
+            container.appendChild(blogElement);
+          });
+          
+          // 为阅读更多按钮添加事件监听
+          $$('.view-blog-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const blogId = btn.getAttribute('data-id');
+              openBlogDetails(blogId);
+            });
+          });
+        } else {
+          $('#home-blogs').innerHTML = `
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <div class="text-center py-8">
+                <i class="fa fa-newspaper-o text-gray-300 text-4xl mb-4"></i>
+                <p class="text-gray-500">暂无博客内容</p>
+              </div>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('加载最新博客失败:', error);
+        $('#home-blogs').innerHTML = `
+          <div class="bg-gray-50 p-6 rounded-lg">
+            <p class="text-red-500">加载博客失败，请稍后再试</p>
+          </div>
+        `;
+      }
+    }
+    
+    // 加载最新备忘录
+    async function loadLatestMemos() {
+      try {
+        const response = await fetchData(`${base_url}/api/memos`);
+        
+        if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+          const container = $('#home-memos');
+          container.innerHTML = '';
+          
+          response.data.slice(0, 3).forEach(memo => {
+            const memoElement = document.createElement('div');
+            memoElement.innerHTML = `
+              <div class="bg-gray-50 p-4 rounded-lg hover-scale slide-up">
+                <div class="flex justify-between items-start">
+                  <h4 class="font-medium mb-1">${memo.title || '无标题'}</h4>
+                  <div class="flex space-x-1">
+                    <button class="text-gray-400 hover:text-primary edit-memo-btn" data-id="${memo.id}">
+                      <i class="fa fa-pencil"></i>
+                    </button>
+                    <button class="text-gray-400 hover:text-red-500 delete-memo-btn" data-id="${memo.id}">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                <p class="text-gray-800 line-clamp-2">${memo.content}</p>
+              </div>
+            `;
+            container.appendChild(memoElement);
+          });
+          
+          // 为编辑按钮添加事件监听
+          $$('.edit-memo-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const memoId = btn.getAttribute('data-id');
+              openEditMemo(memoId);
+            });
+          });
+          
+          // 为删除按钮添加事件监听
+          $$('.delete-memo-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const memoId = btn.getAttribute('data-id');
+              deleteMemo(memoId);
+            });
+          });
+        } else {
+          $('#home-memos').innerHTML = `
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="text-center py-6">
+                <i class="fa fa-sticky-note-o text-gray-300 text-3xl mb-3"></i>
+                <p class="text-gray-500">暂无备忘录内容</p>
+              </div>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('加载最新备忘录失败:', error);
+        $('#home-memos').innerHTML = `
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <p class="text-red-500">加载备忘录失败，请稍后再试</p>
+          </div>
+        `;
+      }
+    }
+    
+    // 加载博客列表
+    async function loadBlogs(category = '全部', search = '') {
+      try {
+        let url = `${base_url}/api/blogs`;
+        const params = [];
+        
+        if (category) params.push(`category=${encodeURIComponent(category)}`);
+        if (search) params.push(`search=${encodeURIComponent(search)}`);
+        console.log(category);
+        if (params.length > 0) {
+          url += '?' + params.join('&');
+        }
+        
+        const response = await fetchData(url);
+        
+        if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+          const container = $('#blog-cards');
+          container.innerHTML = '';
+          
+          response.data.forEach(blog => {
+            const blogElement = document.createElement('div');
+            blogElement.innerHTML = `
+              <div class="bg-gray-50 p-6 rounded-lg hover-scale slide-up">
+                <div class="flex justify-between items-start">
+                  <h3 class="text-xl font-bold mb-2">${blog.title}</h3>
+                  <span class="text-xs text-gray-500 bg-white px-2 py-1 rounded-full">${blog.category}</span>
+                </div>
+                <p class="text-gray-600">${blog.summary}</p>
+                <div class="mt-4 flex justify-between items-center">
+                  <span class="text-sm text-gray-500">${formatDate(blog.createdAt)}</span>
+                  <button class="text-primary hover:underline view-blog-btn" data-id="${blog.id}">阅读更多</button>
+                </div>
+              </div>
+            `;
+            container.appendChild(blogElement);
+          });
+          
+          // 为阅读更多按钮添加事件监听
+          $$('.view-blog-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const blogId = btn.getAttribute('data-id');
+              openBlogDetails(blogId);
+            });
+          });
+        } else {
+          $('#blog-cards').innerHTML = `
+            <div class="bg-gray-50 p-6 rounded-lg col-span-full text-center py-16">
+              <i class="fa fa-search text-gray-300 text-4xl mb-4"></i>
+              <p class="text-gray-500">没有找到匹配的博客</p>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('加载博客失败:', error);
+        $('#blog-cards').innerHTML = `
+          <div class="bg-gray-50 p-6 rounded-lg col-span-full text-center">
+            <p class="text-red-500">加载博客失败，请稍后再试</p>
+          </div>
+        `;
+      }
+    }
+    
+    // 打开博客详情
+    async function openBlogDetails(blogId) {
+      try {
+        const response = await fetchData(`${base_url}/api/blogs/${blogId}`);
+        
+        if (response.success && response.data) {
+          const blog = response.data;
+          $('#modal-title').textContent = blog.title;
+          $('#modal-date').textContent = formatDate(blog.createdAt);
+          $('#modal-category').textContent = blog.category;
+          $('#modal-content').textContent = blog.content;
+          
+          // 设置编辑博客按钮的事件
+          $('#edit-blog').setAttribute('data-id', blogId);
+          
+          // 设置删除博客按钮的事件
+          $('#delete-blog').setAttribute('data-id', blogId);
+          
+          // 显示博客详情模态框
+          blogModal.classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('加载博客详情失败:', error);
+        alert('加载博客详情失败，请稍后再试');
+      }
+    }
+    
+    // 博客筛选
+    $$('.category-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        // 移除所有按钮的活跃状态
+        $$('.category-btn').forEach(btn => {
+          btn.classList.remove('bg-primary', 'text-white');
+          btn.classList.add('bg-white', 'text-dark', 'hover:bg-gray-100');
+        });
+        
+        // 设置当前按钮的活跃状态
+        button.classList.remove('bg-white', 'text-dark', 'hover:bg-gray-100');
+        button.classList.add('bg-primary', 'text-white');
+        
+        const category = button.textContent === '全部' ? '' : button.textContent;
+        const search = $('#blog-search').value;
+        
+        loadBlogs(category, search);
+      });
+    });
+    
+    // 博客搜索
+    $('#blog-search').addEventListener('input', debounce(async (event) => {
+      const search = event.target.value;
+      const activeCategoryBtn = $('.category-btn.bg-primary');
+      const category = activeCategoryBtn.textContent === '全部' ? '' : activeCategoryBtn.textContent;
+      
+      loadBlogs(category, search);
+    }, 300));
+    
+    // 加载更多博客
+    $('#load-more-blogs').addEventListener('click', async () => {
+      // 这里可以实现分页加载逻辑
+      alert('功能开发中，敬请期待');
+    });
+    
+    // 编辑博客
+    $('#edit-blog').addEventListener('click', () => {
+      const blogId = $('#edit-blog').getAttribute('data-id');
+      
+      if (blogId) {
+        // 编辑现有博客
+        $('#edit-blog-modal-title').textContent = '编辑博客';
+        $('#save-edit-blog').setAttribute('data-id', blogId);
+        
+        // 加载博客数据到表单中
+        loadBlogForEdit(blogId);
+        
+        // 显示编辑模态框
+        editBlogModal.classList.remove('hidden');
+      }
+    });
+    
+    // 加载博客数据到编辑表单
+    async function loadBlogForEdit(blogId) {
+      try {
+        const response = await fetchData(`${base_url}/api/blogs/${blogId}`);
+        
+        if (response.success && response.data) {
+          const blog = response.data;
+          $('#edit-blog-title').value = blog.title;
+          $('#edit-blog-category').value = blog.category;
+          $('#edit-blog-summary').value = blog.summary;
+          $('#edit-blog-content').value = blog.content;
+        }
+      } catch (error) {
+        console.error('加载博客数据失败:', error);
+        alert('加载博客数据失败，请稍后再试');
+      }
+    };
+    
+    // 保存编辑的博客
+    $('#save-edit-blog').addEventListener('click', async () => {
+      const blogId = $('#save-edit-blog').getAttribute('data-id');
+      const title = $('#edit-blog-title').value.trim();
+      const category = $('#edit-blog-category').value;
+      const summary = $('#edit-blog-summary').value.trim();
+      const content = $('#edit-blog-content').value.trim();
+      
+      if (!title || !content) {
+        showToast('标题和内容不能为空', 'error');
+        return;
+      }
+      
+      try {
+        const method = blogId ? 'PUT' : 'POST';
+        const url = blogId ? `${base_url}/api/blogs/${blogId}` : `${base_url}/api/blogs`;
+        
+        const response = await fetchData(url, {
+          method,
+          body: JSON.stringify({
+            title,
+            category,
+            summary,
+            content
+          })
+        });
+        
+        if (response.success) {
+          showToast(blogId ? '博客更新成功' : '博客创建成功', 'success');
+          editBlogModal.classList.add('hidden');
+          
+          // 刷新所有博客相关列表
+          loadBlogs();
+          loadLatestBlogs();
+          
+          // 如果当前在博客详情页，也刷新
+          if (!blogModal.classList.contains('hidden')) {
+            const currentBlogId = $('#delete-blog').getAttribute('data-id');
+            if (currentBlogId === blogId) {
+              openBlogDetails(blogId);
+            }
+          }
+        } else {
+          showToast(response.message || '操作失败，请稍后再试', 'error');
+        }
+      } catch (error) {
+        console.error('保存博客失败:', error);
+        showToast('保存博客失败，请稍后再试', 'error');
+      }
+    });
+    
+    // 删除博客
+    $('#delete-blog').addEventListener('click', () => {
+      const blogId = $('#delete-blog').getAttribute('data-id');
+      
+      if (blogId) {
+        confirmTitle.textContent = '确认删除';
+        confirmMessage.textContent = '确定要删除这篇博客吗？此操作不可撤销。';
+        
+        // 保存当前要删除的博客ID
+        confirmOk.onclick = () => {
+          deleteBlog(blogId);
+          confirmDialog.classList.add('hidden');
+        };
+        
+        // 显示确认对话框
+        confirmDialog.classList.remove('hidden');
+      }
+    });
+    
+    // 执行删除博客
+    async function deleteBlog(blogId) {
+      try {
+        const response = await fetchData(`${base_url}/api/blogs/${blogId}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.success) {
+          showToast('博客删除成功', 'success');
+          blogModal.classList.add('hidden');
+          
+          // 刷新所有博客相关列表
+          loadBlogs();
+          loadLatestBlogs();
+        } else {
+          showToast(response.message || '删除失败，请稍后再试', 'error');
+        }
+      } catch (error) {
+        console.error('删除博客失败:', error);
+        showToast('删除博客失败，请稍后再试', 'error');
+      }
+    }
+    
+    // 新建备忘录按钮
+    $('#add-memo-btn').addEventListener('click', () => {
+      // 重置表单
+      $('#memo-title').value = '';
+      $('#memo-content').value = '';
+      
+      // 设置模态框标题
+      $('#memo-modal-title').textContent = '新建备忘录';
+      $('#save-memo').setAttribute('data-id', '');
+      
+      // 显示备忘录模态框
+      memoModal.classList.remove('hidden');
+    });
+    
+    // 保存备忘录
+    $('#save-memo').addEventListener('click', async () => {
+      const memoId = $('#save-memo').getAttribute('data-id');
+      const title = $('#memo-title').value.trim();
+      const content = $('#memo-content').value.trim();
+      
+      if (!content) {
+        showToast('备忘录内容不能为空', 'error');
+        return;
+      }
+      
+      try {
+        const method = memoId ? 'PUT' : 'POST';
+        const url = memoId ? `${base_url}/api/memos/${memoId}` : `${base_url}/api/memos`;
+        
+        const response = await fetchData(url, {
+          method,
+          body: JSON.stringify({
+            title,
+            content
+          })
+        });
+        
+        if (response.success) {
+          showToast(memoId ? '备忘录更新成功' : '备忘录创建成功', 'success');
+          memoModal.classList.add('hidden');
+          
+          // 刷新所有备忘录相关列表
+          loadMemos();
+          loadLatestMemos();
+        } else {
+          showToast(response.message || '操作失败，请稍后再试', 'error');
+        }
+      } catch (error) {
+        console.error('保存备忘录失败:', error);
+        showToast('保存备忘录失败，请稍后再试', 'error');
+      }
+    });
+    
+    // 加载备忘录列表
+    async function loadMemos() {
+      try {
+        const response = await fetchData(`${base_url}/api/memos`);
+        
+        if (response.success && Array.isArray(response.data)) {
+          const container = $('#memo-list');
+          
+          if (response.data.length > 0) {
+            container.innerHTML = '';
+            $('#empty-memo-state').classList.add('hidden');
+            
+            response.data.forEach(memo => {
+              const memoElement = document.createElement('div');
+              memoElement.innerHTML = `
+                <div class="bg-gray-50 p-4 rounded-lg hover-scale slide-up">
+                  <div class="flex justify-between items-start">
+                    <h4 class="font-medium mb-1">${memo.title || '无标题'}</h4>
+                    <div class="flex space-x-1">
+                      <button class="text-gray-400 hover:text-primary edit-memo-btn" data-id="${memo.id}">
+                        <i class="fa fa-pencil"></i>
+                      </button>
+                      <button class="text-gray-400 hover:text-red-500 delete-memo-btn" data-id="${memo.id}">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <p class="text-gray-800">${memo.content}</p>
+                </div>
+              `;
+              container.appendChild(memoElement);
+            });
+            
+            // 为编辑按钮添加事件监听
+            $$('.edit-memo-btn').forEach(btn => {
+              btn.addEventListener('click', () => {
+                const memoId = btn.getAttribute('data-id');
+                openEditMemo(memoId);
+              });
+            });
+            
+            // 为删除按钮添加事件监听
+            $$('.delete-memo-btn').forEach(btn => {
+              btn.addEventListener('click', () => {
+                const memoId = btn.getAttribute('data-id');
+                deleteMemo(memoId);
+              });
+            });
+          } else {
+            container.innerHTML = '';
+            $('#empty-memo-state').classList.remove('hidden');
+          }
+        } else {
+          $('#memo-list').innerHTML = `
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <p class="text-red-500">加载备忘录失败，请稍后再试</p>
+            </div>
+          `;
+          $('#empty-memo-state').classList.add('hidden');
+        }
+      } catch (error) {
+        console.error('加载备忘录失败:', error);
+        $('#memo-list').innerHTML = `
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <p class="text-red-500">加载备忘录失败，请稍后再试</p>
+          </div>
+        `;
+        $('#empty-memo-state').classList.add('hidden');
+      }
+    }
+    
+    // 打开编辑备忘录
+    async function openEditMemo(memoId) {
+      try {
+        const response = await fetchData(`${base_url}/api/memos/${memoId}`);
+        
+        if (response.success && response.data) {
+          const memo = response.data;
+          $('#memo-title').value = memo.title || '';
+          $('#memo-content').value = memo.content;
+          
+          // 设置模态框标题和保存按钮的data-id
+          $('#memo-modal-title').textContent = '编辑备忘录';
+          $('#save-memo').setAttribute('data-id', memoId);
+          
+          // 显示备忘录模态框
+          memoModal.classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('加载备忘录数据失败:', error);
+        showToast('加载备忘录数据失败，请稍后再试', 'error');
+      }
+    }
+    
+    // 删除备忘录
+    function deleteMemo(memoId) {
+      if (memoId) {
+        confirmTitle.textContent = '确认删除';
+        confirmMessage.textContent = '确定要删除这个备忘录吗？此操作不可撤销。';
+        
+        // 保存当前要删除的备忘录ID
+        confirmOk.onclick = () => {
+          executeDeleteMemo(memoId);
+          confirmDialog.classList.add('hidden');
+        };
+        
+        // 显示确认对话框
+        confirmDialog.classList.remove('hidden');
+      }
+    }
+    
+    // 执行删除备忘录
+    async function executeDeleteMemo(memoId) {
+      try {
+        const response = await fetchData(`${base_url}/api/memos/${memoId}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.success) {
+          showToast('备忘录删除成功', 'success');
+          
+          // 刷新所有备忘录相关列表
+          loadMemos();
+          loadLatestMemos();
+        } else {
+          showToast(response.message || '删除失败，请稍后再试', 'error');
+        }
+      } catch (error) {
+        console.error('删除备忘录失败:', error);
+        showToast('删除备忘录失败，请稍后再试', 'error');
+      }
+    }
+    
+    // 显示通知提示
+    function showToast(message, type = 'info') {
+      // 创建toast元素
+      const toast = document.createElement('div');
+      toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg flex items-center z-50 transform transition-all duration-300 opacity-0 translate-y-4`;
+      
+      // 设置不同类型的样式
+      if (type === 'success') {
+        toast.classList.add('bg-success', 'text-white');
+        toast.innerHTML = `<i class="fa fa-check-circle mr-2"></i> ${message}`;
+      } else if (type === 'error') {
+        toast.classList.add('bg-danger', 'text-white');
+        toast.innerHTML = `<i class="fa fa-times-circle mr-2"></i> ${message}`;
+      } else {
+        toast.classList.add('bg-primary', 'text-white');
+        toast.innerHTML = `<i class="fa fa-info-circle mr-2"></i> ${message}`;
+      }
+      
+      // 添加到页面
+      document.body.appendChild(toast);
+      
+      // 显示toast
+      setTimeout(() => {
+        toast.classList.remove('opacity-0', 'translate-y-4');
+      }, 10);
+      
+      // 3秒后隐藏toast
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-4');
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 3000);
+    }
+    
+    // 页面加载完成后执行
+    window.addEventListener('load', () => {
+      loadLatestBlogs();
+      loadLatestMemos();
+      loadBlogs();
+      loadMemos();
+    });
+  </script>
+</body>
+</html>
+  

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人网站</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="./config.js"></script>
+</head>
+<body class="font-inter bg-light text-dark min-h-screen flex flex-col">
+  <!-- 导航栏 -->
+  <header id="navbar-container"></header>
+
+  <!-- 主内容区 -->
+  <main class="flex-grow pt-20">
+    <!-- 首页 -->
+    <section id="home" class="py-16">
+      <div class="container mx-auto px-4">
+        <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-center mb-12">欢迎来到这个网站</h1>
+        
+        <!-- 最新内容 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <!-- 最新博客 -->
+          <div id="latest-blogs-container"></div>
+          
+          <!-- 最新备忘录 -->
+          <div id="latest-memos-container"></div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 博客部分 -->
+    <section id="blog" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-center mb-12">我的博客</h2>
+        
+        <!-- 博客筛选和搜索 -->
+        <div id="blog-filter-container"></div>
+        
+        <!-- 博客卡片网格 -->
+        <div id="blog-cards-container"></div>
+        
+        <!-- 加载更多按钮 -->
+        <div class="text-center mt-12">
+          <button id="load-more-blogs" class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-full transition-colors">
+            加载更多 <i class="fa fa-angle-down ml-2"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 备忘录部分 -->
+    <section id="memo" class="py-16">
+      <div class="container mx-auto px-4">
+        <div id="memo-header-container"></div>
+        
+        <!-- 备忘录列表 -->
+        <div id="memo-list-container"></div>
+        
+        <!-- 空状态提示 -->
+        <div id="empty-memo-state" class="hidden text-center py-16">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+            <i class="fa fa-sticky-note-o text-gray-400 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-medium text-gray-500 mb-2">暂无备忘录</h3>
+          <p class="text-gray-400">点击上方"新建备忘录"按钮开始记录你的想法</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer id="footer-container"></footer>
+
+  <!-- 模态框 -->
+  <div id="modals-container"></div>
+
+  <script src="./utils.js"></script>
+  <script src="./components/blog.js"></script>
+  <script src="./components/footer.js"></script>
+  <script src="./components/modals.js"></script>
+  <script src="./components/navbar.js"></script>
+</body>
+</html>  

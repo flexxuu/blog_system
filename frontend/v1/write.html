@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>写博客 - 个人网站</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#f97316',
+            dark: '#1e293b',
+            light: '#f8fafc'
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .editor-toolbar {
+        @apply bg-gray-100 border-b border-gray-200 px-4 py-2 flex flex-wrap gap-2;
+      }
+      .editor-toolbar button {
+        @apply p-1.5 rounded hover:bg-gray-200 transition-colors;
+      }
+    }
+  </style>
+</head>
+<body class="font-inter bg-light text-dark min-h-screen flex flex-col">
+  <!-- 导航栏 -->
+  <nav id="navbar" class="bg-white shadow-md fixed w-full z-50 transition-all duration-300">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold text-primary flex items-center">
+        <i class="fa fa-user-circle mr-2"></i>
+        <span>个人网站</span>
+      </a>
+      
+      <!-- 桌面导航 -->
+      <div class="hidden md:flex space-x-8">
+        <a href="index.html#home" class="nav-link font-medium hover:text-primary transition-colors">首页</a>
+        <a href="index.html#blog" class="nav-link font-medium hover:text-primary transition-colors">博客</a>
+        <a href="index.html#memo" class="nav-link font-medium hover:text-primary transition-colors">备忘录</a>
+        <a href="#" class="nav-link font-medium text-primary">写博客</a>
+      </div>
+      
+      <!-- 移动端菜单按钮 -->
+      <button id="menuBtn" class="md:hidden text-dark focus:outline-none">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+      <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+        <a href="index.html#home" class="mobile-nav-link py-2 font-medium hover:text-primary transition-colors">首页</a>
+        <a href="index.html#blog" class="mobile-nav-link py-2 font-medium hover:text-primary transition-colors">博客</a>
+        <a href="index.html#memo" class="mobile-nav-link py-2 font-medium hover:text-primary transition-colors">备忘录</a>
+        <a href="#" class="mobile-nav-link py-2 font-medium text-primary">写博客</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容区 -->
+  <main class="flex-grow pt-20">
+    <!-- 写博客部分 -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold">写博客</h2>
+          <a href="index.html" class="mt-4 md:mt-0 bg-gray-200 hover:bg-gray-300 text-dark font-medium px-6 py-3 rounded-full flex items-center transition-colors">
+            <i class="fa fa-arrow-left mr-2"></i> 返回首页
+          </a>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+          <form id="blog-form" class="space-y-6">
+            <div>
+              <label for="blog-title" class="block text-sm font-medium text-gray-700 mb-1">标题</label>
+              <input type="text" id="blog-title" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="输入博客标题">
+            </div>
+            
+            <div>
+              <label for="blog-category" class="block text-sm font-medium text-gray-700 mb-1">分类</label>
+              <select id="blog-category" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50">
+                <option value="技术">技术</option>
+                <option value="生活">生活</option>
+                <option value="学习">学习</option>
+              </select>
+            </div>
+            
+            <div>
+              <label for="blog-summary" class="block text-sm font-medium text-gray-700 mb-1">摘要</label>
+              <textarea id="blog-summary" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="输入博客摘要（简短描述）"></textarea>
+            </div>
+            
+            <div>
+              <label for="blog-content" class="block text-sm font-medium text-gray-700 mb-1">内容</label>
+              <div class="border border-gray-300 rounded-lg overflow-hidden">
+                <div class="editor-toolbar">
+                  <button type="button" data-format="bold" title="粗体"><i class="fa fa-bold"></i></button>
+                  <button type="button" data-format="italic" title="斜体"><i class="fa fa-italic"></i></button>
+                  <button type="button" data-format="underline" title="下划线"><i class="fa fa-underline"></i></button>
+                  <button type="button" data-format="link" title="链接"><i class="fa fa-link"></i></button>
+                  <button type="button" data-format="header" data-value="1" title="标题1"><i class="fa fa-header"><sup>1</sup></i></button>
+                  <button type="button" data-format="header" data-value="2" title="标题2"><i class="fa fa-header"><sup>2</sup></i></button>
+                  <button type="button" data-format="list" data-value="ul" title="无序列表"><i class="fa fa-list-ul"></i></button>
+                  <button type="button" data-format="list" data-value="ol" title="有序列表"><i class="fa fa-list-ol"></i></button>
+                  <button type="button" data-format="code" title="代码块"><i class="fa fa-code"></i></button>
+                </div>
+                <textarea id="blog-content" rows="12" class="w-full px-4 py-3 border-t border-gray-200 focus:outline-none" placeholder="开始撰写你的博客内容..."></textarea>
+              </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+              <button type="button" id="preview-blog" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center">
+                <i class="fa fa-eye mr-2"></i> 预览
+              </button>
+              <button type="submit" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center">
+                <i class="fa fa-save mr-2"></i> 保存博客
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">关于我</h3>
+          <p class="text-gray-400">一个热爱技术和分享的开发者，记录生活和学习的点滴。</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">联系方式</h3>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-github text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-twitter text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-linkedin text-xl"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">订阅更新</h3>
+          <div class="flex">
+            <input type="email" placeholder="输入你的邮箱" class="px-4 py-2 rounded-l-lg w-full focus:outline-none text-dark">
+            <button class="bg-primary hover:bg-primary/90 px-4 py-2 rounded-r-lg transition-colors">
+              <i class="fa fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; 2025 个人网站 版权所有</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 博客预览模态框 -->
+  <div id="preview-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-start mb-4">
+          <h3 id="preview-title" class="text-2xl font-bold"></h3>
+          <button id="close-preview" class="text-gray-400 hover:text-gray-600">
+            <i class="fa fa-times text-xl"></i>
+          </button>
+        </div>
+        <div class="text-gray-500 mb-4 flex items-center">
+          <span id="preview-date" class="mr-4"></span>
+          <span id="preview-category"></span>
+        </div>
+        <div id="preview-content" class="prose max-w-none"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import base_url from './frontend_config.js';
+    // 从localStorage获取博客数据
+    let blogs = JSON.parse(localStorage.getItem('blogs')) || [];
+    
+    // DOM元素
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const blogForm = document.getElementById('blog-form');
+    const blogTitle = document.getElementById('blog-title');
+    const blogCategory = document.getElementById('blog-category');
+    const blogContent = document.getElementById('blog-content');
+    const previewBlog = document.getElementById('preview-blog');
+    const previewModal = document.getElementById('preview-modal');
+    const closePreview = document.getElementById('close-preview');
+    const previewTitle = document.getElementById('preview-title');
+    const previewDate = document.getElementById('preview-date');
+    const previewCategory = document.getElementById('preview-category');
+    const previewContent = document.getElementById('preview-content');
+    
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      // 移动端菜单切换
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+      
+      // 编辑器工具栏
+      document.querySelectorAll('.editor-toolbar button').forEach(button => {
+        button.addEventListener('click', () => {
+          const format = button.getAttribute('data-format');
+          const value = button.getAttribute('data-value');
+          
+          if (format === 'link') {
+            const url = prompt('请输入链接地址:', 'https://');
+            if (url) {
+              document.execCommand(format, false, url);
+            }
+          } else if (format === 'header') {
+            document.execCommand('formatBlock', false, `<h${value}>`);
+          } else {
+            document.execCommand(format, false, value);
+          }
+          
+          blogContent.focus();
+        });
+      });
+      
+      // 保存博客表单提交
+      blogForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const title = blogTitle.value.trim();
+        const category = blogCategory.value;
+        const content = blogContent.value.trim();
+
+        if (!title) {
+          alert('请输入博客标题');
+          return;
+        }
+
+        if (!content) {
+          alert('请输入博客内容');
+          return;
+        }
+
+        try {
+          const base_url = await import('./frontend_config.js');
+          const response = await fetch(`${base_url}/api/blogs`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              title,
+              content,
+              category,
+              author: "张三",
+              summary: content.substring(0, 100) + "..."
+            })
+          });
+
+          if (response.ok) {
+            alert('博客保存成功！');
+            window.location.href = 'index.html#blog';
+          } else {
+            alert('博客保存失败，请重试。');
+          }
+        } catch (error) {
+          console.error('保存博客时出错:', error);
+          alert('博客保存失败，请检查网络连接。');
+        }
+      });
+      
+      // 预览博客
+      previewBlog.addEventListener('click', () => {
+        const title = blogTitle.value.trim();
+        const category = blogCategory.value;
+        const content = blogContent.value.trim();
+        
+        if (!title) {
+          alert('请输入博客标题');
+          return;
+        }
+        
+        if (!content) {
+          alert('请输入博客内容');
+          return;
+        }
+        
+        const now = new Date();
+        const date = now.toISOString().split('T')[0];
+        
+        previewTitle.textContent = title;
+        previewDate.textContent = date;
+        previewCategory.textContent = category;
+        previewContent.innerHTML = `<p>${content.replace(/\n/g, '<br><br>')}</p>`;
+        
+        previewModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      });
+      
+      // 关闭预览模态框
+      closePreview.addEventListener('click', () => {
+        previewModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      });
+      
+      // 点击预览模态框外部关闭
+      previewModal.addEventListener('click', (e) => {
+        if (e.target === previewModal) {
+          previewModal.classList.add('hidden');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
