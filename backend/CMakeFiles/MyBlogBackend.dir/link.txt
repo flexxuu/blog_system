@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/MyBlogBackend.dir/src/main.cpp.o -o MyBlogBackend 

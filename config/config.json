@@ -1,0 +1,36 @@
+{
+    "server": {
+        "host": "localhost",
+        "port": 8080,
+        "thread_pool_size": 10,
+        "timeout_seconds": 30,
+        "static_files_dir": "../www",
+        "enable_https": false,
+        "cert_file": "/path/to/cert.pem",
+        "key_file": "/path/to/key.pem"
+    },
+    "data": {
+        "blogs_file": "../../data/blogs.json",
+        "memos_file": "../../data/memos.json",
+        "backup_interval_hours": 24,
+        "backup_dir": "../../data/backups",
+        "auto_save_interval_seconds": 300
+    },
+    "logging": {
+        "level": "info",
+        "file": "logs/blog_system.log",
+        "max_size_mb": 10,
+        "max_files": 5,
+        "console_logging": true,
+        "file_logging": true
+    },
+    "security": {
+        "jwt_secret": "your-secret-key",
+        "jwt_expiration_hours": 24,
+        "cors_allowed_origins": ["http://localhost:3000"],
+        "rate_limit": {
+            "enabled": true,
+            "requests_per_minute": 60
+        }
+    }
+}

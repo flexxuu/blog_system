@@ -1,0 +1,2 @@
+#define PROJECT_VERSION "@PROJECT_VERSION@"
+// 可以根据实际需求添加更多配置

@@ -1,0 +1,41 @@
+blog-system/
+├── backend/
+│   ├── CMakeLists.txt
+│   └── src/
+│       ├── controller/
+│       │   └── api_controller.hpp
+│       ├── model/
+│       │   ├── blog_post.hpp
+│       │   ├── blog_post.cpp
+│       │   ├── memo.hpp
+│       │   └── memo.cpp
+│       ├── repository/
+│       │   ├── data_store.hpp
+│       │   └── data_store.cpp
+│       ├── service/
+│       │   ├── blog_service.hpp
+│       │   ├── blog_service.cpp
+│       │   ├── memo_service.hpp
+│       │   ├── memo_service.cpp
+│       │   ├── backup_service.hpp
+│       │   └── backup_service.cpp
+│       ├── util/
+│       │   ├── api_response.hpp
+│       │   ├── config.hpp
+│       │   ├── config.cpp
+│       │   ├── date_time_utils.hpp
+│       │   └── logger.hpp
+│       └── main.cpp
+├── config/
+│   └── config.json
+├── data/
+│   └── .gitkeep
+├── logs/
+│   └── .gitkeep
+├── www/
+│   └── index.html
+├── scripts/
+│   ├── build.sh
+│   ├── run.sh
+│   └── deploy.sh
+└── .gitignore

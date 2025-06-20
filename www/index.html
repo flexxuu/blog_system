@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人网站</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#f97316',
+            dark: '#1e293b',
+            light: '#f8fafc'
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card-shadow {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      .hover-scale {
+        transition: transform 0.3s ease;
+      }
+      .hover-scale:hover {
+        transform: scale(1.02);
+      }
+    }
+  </style>
+</head>
+<body class="font-inter bg-light text-dark min-h-screen flex flex-col">
+  <!-- 导航栏 -->
+  <nav id="navbar" class="bg-white shadow-md fixed w-full z-50 transition-all duration-300">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="#" class="text-2xl font-bold text-primary flex items-center">
+        <i class="fa fa-user-circle mr-2"></i>
+        <span>个人网站</span>
+      </a>
+      
+      <!-- 桌面导航 -->
+      <div class="hidden md:flex space-x-8">
+        <a href="#home" class="nav-link font-medium hover:text-primary transition-colors">首页</a>
+        <a href="#blog" class="nav-link font-medium hover:text-primary transition-colors">博客</a>
+        <a href="#memo" class="nav-link font-medium hover:text-primary transition-colors">备忘录</a>
+        <a href="write.html" class="nav-link font-medium hover:text-primary transition-colors">写博客</a>
+      </div>
+      
+      <!-- 移动端菜单按钮 -->
+      <button id="menuBtn" class="md:hidden text-dark focus:outline-none">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+      <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+        <a href="#home" class="mobile-nav-link py-2 font-medium hover:text-primary transition-colors">首页</a>
+        <a href="#blog" class="mobile-nav-link py-2 font-medium hover:text-primary transition-colors">博客</a>
+        <a href="#memo" class="mobile-nav-link py-2 font-medium hover:text-primary transition-colors">备忘录</a>
+        <a href="write.html" class="mobile-nav-link py-2 font-medium hover:text-primary transition-colors">写博客</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容区 -->
+  <main class="flex-grow pt-20">
+    <!-- 首页 -->
+    <section id="home" class="py-16">
+      <div class="container mx-auto px-4">
+        <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-center mb-12">欢迎来到我的个人网站</h1>
+        
+        <!-- 最新内容 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <!-- 最新博客 -->
+          <div>
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+              <i class="fa fa-newspaper-o text-primary mr-2"></i>最新博客
+            </h2>
+            <div class="space-y-6" id="home-blogs">
+              <!-- 最新博客内容将通过JS动态加载 -->
+            </div>
+          </div>
+          
+          <!-- 最新备忘录 -->
+          <div>
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+              <i class="fa fa-sticky-note text-secondary mr-2"></i>最新备忘录
+            </h2>
+            <div class="space-y-4" id="home-memos">
+              <!-- 最新备忘录内容将通过JS动态加载 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 博客部分 -->
+    <section id="blog" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-center mb-12">我的博客</h2>
+        
+        <!-- 博客筛选和搜索 -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <div class="flex flex-wrap gap-2">
+            <button class="category-btn bg-primary text-white px-4 py-2 rounded-full text-sm">全部</button>
+            <button class="category-btn bg-white text-dark hover:bg-gray-100 px-4 py-2 rounded-full text-sm transition-colors">技术</button>
+            <button class="category-btn bg-white text-dark hover:bg-gray-100 px-4 py-2 rounded-full text-sm transition-colors">生活</button>
+            <button class="category-btn bg-white text-dark hover:bg-gray-100 px-4 py-2 rounded-full text-sm transition-colors">学习</button>
+          </div>
+          <div class="relative w-full md:w-auto">
+            <input type="text" id="blog-search" placeholder="搜索博客..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 w-full md:w-64">
+            <i class="fa fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+          </div>
+        </div>
+        
+        <!-- 博客卡片网格 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-cards">
+          <!-- 博客卡片将通过JS动态加载 -->
+        </div>
+        
+        <!-- 加载更多按钮 -->
+        <div class="text-center mt-12">
+          <button id="load-more-blogs" class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-full transition-colors">
+            加载更多 <i class="fa fa-angle-down ml-2"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 备忘录部分 -->
+    <section id="memo" class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold">我的备忘录</h2>
+          <button id="add-memo-btn" class="mt-4 md:mt-0 bg-secondary hover:bg-secondary/90 text-white font-medium px-4 py-2 rounded-full flex items-center transition-colors">
+            <i class="fa fa-plus mr-2"></i> 新建备忘录
+          </button>
+        </div>
+        
+        <!-- 备忘录列表 -->
+        <div class="space-y-4" id="memo-list">
+          <!-- 备忘录内容将通过JS动态加载 -->
+        </div>
+        
+        <!-- 空状态提示 -->
+        <div id="empty-memo-state" class="hidden text-center py-16">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+            <i class="fa fa-sticky-note-o text-gray-400 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-medium text-gray-500 mb-2">暂无备忘录</h3>
+          <p class="text-gray-400">点击上方"新建备忘录"按钮开始记录你的想法</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">关于我</h3>
+          <p class="text-gray-400">一个热爱技术和分享的开发者，记录生活和学习的点滴。</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">联系方式</h3>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-github text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-twitter text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-linkedin text-xl"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">订阅更新</h3>
+          <div class="flex">
+            <input type="email" placeholder="输入你的邮箱" class="px-4 py-2 rounded-l-lg w-full focus:outline-none text-dark">
+            <button class="bg-primary hover:bg-primary/90 px-4 py-2 rounded-r-lg transition-colors">
+              <i class="fa fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; 2025 个人网站 版权所有</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 博客详情模态框 -->
+  <div id="blog-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-start mb-4">
+          <h3 id="modal-title" class="text-2xl font-bold"></h3>
+          <div class="flex space-x-2">
+            <button id="edit-blog" class="text-primary hover:text-primary/80">
+              <i class="fa fa-pencil"></i> 编辑
+            </button>
+            <button id="close-modal" class="text-gray-400 hover:text-gray-600">
+              <i class="fa fa-times text-xl"></i>
+            </button>
+          </div>
+        </div>
+        <div class="text-gray-500 mb-4 flex items-center">
+          <span id="modal-date" class="mr-4"></span>
+          <span id="modal-category"></span>
+        </div>
+        <div id="modal-content" class="prose max-w-none"></div>
+        <div class="mt-6 pt-4 border-t border-gray-100">
+          <button id="delete-blog" class="text-red-500 hover:text-red-600 font-medium flex items-center">
+            <i class="fa fa-trash mr-2"></i> 删除博客
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 新建/编辑博客模态框 -->
+  <div id="edit-blog-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 id="edit-blog-modal-title" class="text-xl font-bold">新建博客</h3>
+          <button id="close-edit-blog-modal" class="text-gray-400 hover:text-gray-600">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label for="edit-blog-title" class="block text-sm font-medium text-gray-700 mb-1">标题</label>
+            <input type="text" id="edit-blog-title" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="输入博客标题">
+          </div>
+          
+          <div>
+            <label for="edit-blog-category" class="block text-sm font-medium text-gray-700 mb-1">分类</label>
+            <select id="edit-blog-category" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50">
+              <option value="技术">技术</option>
+              <option value="生活">生活</option>
+              <option value="学习">学习</option>
+            </select>
+          </div>
+          
+          <div>
+            <label for="edit-blog-summary" class="block text-sm font-medium text-gray-700 mb-1">摘要</label>
+            <textarea id="edit-blog-summary" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="输入博客摘要（简短描述）"></textarea>
+          </div>
+          
+          <div>
+            <label for="edit-blog-content" class="block text-sm font-medium text-gray-700 mb-1">内容</label>
+            <div class="border border-gray-300 rounded-lg overflow-hidden">
+              <div class="editor-toolbar">
+                <button type="button" data-format="bold" title="粗体"><i class="fa fa-bold"></i></button>
+                <button type="button" data-format="italic" title="斜体"><i class="fa fa-italic"></i></button>
+                <button type="button" data-format="underline" title="下划线"><i class="fa fa-underline"></i></button>
+                <button type="button" data-format="link" title="链接"><i class="fa fa-link"></i></button>
+                <button type="button" data-format="header" data-value="1" title="标题1"><i class="fa fa-header"><sup>1</sup></i></button>
+                <button type="button" data-format="header" data-value="2" title="标题2"><i class="fa fa-header"><sup>2</sup></i></button>
+                <button type="button" data-format="list" data-value="ul" title="无序列表"><i class="fa fa-list-ul"></i></button>
+                <button type="button" data-format="list" data-value="ol" title="有序列表"><i class="fa fa-list-ol"></i></button>
+                <button type="button" data-format="code" title="代码块"><i class="fa fa-code"></i></button>
+              </div>
+              <textarea id="edit-blog-content" rows="12" class="w-full px-4 py-3 border-t border-gray-200 focus:outline-none" placeholder="开始撰写你的博客内容..."></textarea>
+            </div>
+          </div>
+          
+          <div class="flex justify-end space-x-3">
+            <button id="cancel-edit-blog" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center">
+              取消
+            </button>
+            <button id="save-edit-blog" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center">
+              <i class="fa fa-save mr-2"></i> 保存博客
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 新建/编辑备忘录模态框 -->
+  <div id="memo-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-2xl w-full">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 id="memo-modal-title" class="text-xl font-bold">新建备忘录</h3>
+          <button id="close-memo-modal" class="text-gray-400 hover:text-gray-600">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label for="memo-title" class="block text-sm font-medium text-gray-700 mb-1">标题</label>
+            <input type="text" id="memo-title" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="输入备忘录标题">
+          </div>
+          <div>
+            <label for="memo-content" class="block text-sm font-medium text-gray-700 mb-1">内容</label>
+            <textarea id="memo-content" rows="6" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="输入备忘录内容"></textarea>
+          </div>
+          <div class="flex justify-end space-x-3">
+            <button id="cancel-memo" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">取消</button>
+            <button id="save-memo" class="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 移除使用 localStorage 的旧代码
+    // 最新博客加载
+    async function loadLatestBlogs() {
+      try {
+        const response = await fetch('/api/blogs?limit=3');
+        const data = await response.json();
+        const container = document.getElementById('home-blogs');
+        container.innerHTML = '';
+        data.data.forEach(blog => {
+          const blogElement = document.createElement('div');
+          blogElement.innerHTML = `
+            <div class="bg-white p-6 rounded-lg card-shadow hover-scale">
+              <h3 class="text-xl font-bold mb-2">${blog.title}</h3>
+              <p class="text-gray-600">${blog.summary}</p>
+              <a href="#" class="mt-4 inline-block text-primary hover:underline">阅读更多</a>
+            </div>
+          `;
+          container.appendChild(blogElement);
+        });
+      } catch (error) {
+        console.error('加载最新博客失败:', error);
+      }
+    }
+    
+    // 最新备忘录加载
+    async function loadLatestMemos() {
+      try {
+        const response = await fetch('/api/memos');
+        const data = await response.json();
+        const container = document.getElementById('home-memos');
+        container.innerHTML = '';
+        data.data.slice(0, 3).forEach(memo => {
+          const memoElement = document.createElement('div');
+          memoElement.innerHTML = `
+            <div class="bg-white p-4 rounded-lg card-shadow hover-scale">
+              <p class="text-gray-800">${memo.content}</p>
+            </div>
+          `;
+          container.appendChild(memoElement);
+        });
+      } catch (error) {
+        console.error('加载最新备忘录失败:', error);
+      }
+    }
+    
+    // 博客筛选和搜索
+    document.querySelectorAll('.category-btn').forEach(button => {
+      button.addEventListener('click', async () => {
+        const category = button.textContent === '全部' ? '' : button.textContent;
+        try {
+          const response = await fetch(`/api/blogs?category=${category}`);
+          const data = await response.json();
+          const container = document.getElementById('blog-cards');
+          container.innerHTML = '';
+          data.data.forEach(blog => {
+            const blogElement = document.createElement('div');
+            blogElement.innerHTML = `
+              <div class="bg-white p-6 rounded-lg card-shadow hover-scale">
+                <h3 class="text-xl font-bold mb-2">${blog.title}</h3>
+                <p class="text-gray-600">${blog.summary}</p>
+                <a href="#" class="mt-4 inline-block text-primary hover:underline">阅读更多</a>
+              </div>
+            `;
+            container.appendChild(blogElement);
+          });
+        } catch (error) {
+          console.error('筛选博客失败:', error);
+        }
+      });
+    });
+    
+    // 博客搜索
+    document.getElementById('blog-search').addEventListener('input', async (event) => {
+      const search = event.target.value;
+      try {
+        const response = await fetch(`/api/blogs?search=${search}`);
+        const data = await response.json();
+        const container = document.getElementById('blog-cards');
+        container.innerHTML = '';
+        data.data.forEach(blog => {
+          const blogElement = document.createElement('div');
+          blogElement.innerHTML = `
+            <div class="bg-white p-6 rounded-lg card-shadow hover-scale">
+              <h3 class="text-xl font-bold mb-2">${blog.title}</h3>
+              <p class="text-gray-600">${blog.summary}</p>
+              <a href="#" class="mt-4 inline-block text-primary hover:underline">阅读更多</a>
+            </div>
+          `;
+          container.appendChild(blogElement);
+        });
+      } catch (error) {
+        console.error('搜索博客失败:', error);
+      }
+    });
+    
+    // 加载更多博客
+    document.getElementById('load-more-blogs').addEventListener('click', async () => {
+      // 这里需要实现分页逻辑
+      try {
+        const response = await fetch('/api/blogs');
+        const data = await response.json();
+        const container = document.getElementById('blog-cards');
+        data.data.forEach(blog => {
+          const blogElement = document.createElement('div');
+          blogElement.innerHTML = `
+            <div class="bg-white p-6 rounded-lg card-shadow hover-scale">
+              <h3 class="text-xl font-bold mb-2">${blog.title}</h3>
+              <p class="text-gray-600">${blog.summary}</p>
+              <a href="#" class="mt-4 inline-block text-primary hover:underline">阅读更多</a>
+            </div>
+          `;
+          container.appendChild(blogElement);
+        });
+      } catch (error) {
+        console.error('加载更多博客失败:', error);
+      }
+    });
+    
+    // 新建备忘录
+    document.getElementById('add-memo-btn').addEventListener('click', async () => {
+      try {
+        const response = await fetch('/api/memos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ content: '新备忘录内容' })
+        });
+        const data = await response.json();
+        console.log('新建备忘录成功:', data);
+      } catch (error) {
+        console.error('新建备忘录失败:', error);
+      }
+    });
+    
+    // 页面加载完成后执行
+    window.addEventListener('load', () => {
+      loadLatestBlogs();
+      loadLatestMemos();
+    });
+  </script>
+</body>
+</html>
